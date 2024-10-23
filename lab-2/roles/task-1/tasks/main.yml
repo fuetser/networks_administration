@@ -1,0 +1,28 @@
+---
+# tasks file for task-1
+- name: Creating a file with content
+  copy:
+    dest: $HOME/text.txt
+    content: |
+      Hello, world!
+
+- name: Add new line to created file
+  lineinfile:
+    path:  $HOME/text.txt
+    line: Some new line here
+
+- name: Read file content
+  shell: cat $HOME/text.txt
+  register: output_file_content
+  tags: read_file
+
+- name: Show file content
+  debug:
+    msg: "{{ output_file_content.stdout }}"
+  tags: read_file
+
+- name: Remove the file
+  file:
+    path: "{{ ansible_env.HOME }}/text.txt"
+    state: absent
+  tags: remove_file
